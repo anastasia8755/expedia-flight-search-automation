@@ -18,6 +18,12 @@ public class BaseComponent {
         this.baseElement = driver.findElement(By.cssSelector(baseLocator));
     }
 
+    public BaseComponent(WebDriver driver, WebElement baseElement) {
+        this.driver = driver;
+        PageFactory.initElements(driver, this);
+        this.baseElement = baseElement;
+    }
+
     public void executeJavaScript(String script, Object... args) {
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript(script, args);

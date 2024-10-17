@@ -1,5 +1,6 @@
 package com.expedia.pages.components;
 
+import com.expedia.pages.ExpediaFlightsSearchPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -10,7 +11,7 @@ public class SearchPanelComponent extends BaseComponent {
 
     private WebElement departureAirportButton;
     private WebElement arrivalAirportButton;
-    private WebElement roomPicker;
+    private WebElement passengerNumber;
     private WebElement searchButton;
 
     @FindBy(css = "div.uitk-input-swapper-start-input input#origin_select")
@@ -29,7 +30,7 @@ public class SearchPanelComponent extends BaseComponent {
         super(driver, baseLocator);
         this.departureAirportButton = baseElement.findElement(By.cssSelector("div.uitk-input-swapper-start-input [data-stid='origin_select-menu-trigger']"));
         this.arrivalAirportButton = baseElement.findElement(By.cssSelector("div.uitk-input-swapper-end-input [data-stid='destination_select-menu-trigger']"));
-        this.roomPicker = baseElement.findElement(By.cssSelector("button[data-stid='open-room-picker']"));
+        this.passengerNumber = baseElement.findElement(By.cssSelector("button[data-stid='open-room-picker']"));
         this.searchButton = baseElement.findElement(By.id("search_button"));
     }
 
@@ -60,7 +61,7 @@ public class SearchPanelComponent extends BaseComponent {
     }
 
     public SearchPanelComponent setTravelers(int adults, int children, int infantsOnLap, int infantsInSeat) {
-        roomPicker.click();
+        passengerNumber.click();
 
         setTravelerCount("traveler_selector_adult_step_input", adults);
         setTravelerCount("traveler_selector_children_step_input", children);
@@ -73,6 +74,7 @@ public class SearchPanelComponent extends BaseComponent {
     }
 
     private void setTravelerCount(String inputId, int count) {
+
         WebElement inputField = driver.findElement(By.id(inputId));
         WebElement decreaseButton = inputField.findElement(By.xpath("preceding-sibling::button[1]"));
         WebElement increaseButton = inputField.findElement(By.xpath("following-sibling::button[1]"));
@@ -86,7 +88,9 @@ public class SearchPanelComponent extends BaseComponent {
         }
     }
 
-    public void clickSearchButton(){
+    public ExpediaFlightsSearchPage clickSearchButton(){
         searchButton.click();
+
+        return new ExpediaFlightsSearchPage(driver);
     }
 }

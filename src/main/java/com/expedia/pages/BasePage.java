@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.time.Duration;
+import java.util.Set;
 
 public class BasePage {
     protected WebDriver driver;
@@ -64,7 +65,8 @@ public class BasePage {
     }
 
     public void waitForElementToBeVisible(WebElement element) {
-        wait.until(ExpectedConditions.visibilityOf(element));
+        wait.withTimeout(Duration.ofSeconds(Long.parseLong(ConfigLoader.getProperty("implicitWait"))))
+                .until(ExpectedConditions.visibilityOf(element));
     }
 
     public void waitForElementToDisappear(By locator) {
@@ -90,5 +92,19 @@ public class BasePage {
             throw new RuntimeException("Failed to save screenshot: " + filePath, e);
         }
     }
+
+    public void switchToNextTab() {
+        String currentHandle = driver.getWindowHandle();
+
+        Set<String> allHandles = driver.getWindowHandles();
+
+        for (String handle : allHandles) {
+            if (!handle.equals(currentHandle)) {
+                driver.switchTo().window(handle);
+                break;
+            }
+        }
+    }
+
 }
 
